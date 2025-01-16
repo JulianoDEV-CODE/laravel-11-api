@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use App\Models\Post;
+use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\SinglePostResource;
 
 
@@ -113,8 +113,8 @@ class PostController extends Controller
     //fetch single post
     public function getPost($post_id){
         try {
-          $post = Post::where('id',$post_id)->first();
-
+         $post = Post::where('id',$post_id)->first();
+    //$post = Post::with('user','comment','likes')->where('id',$post_id)->first();
             return response()->json([
                 'post' => $post
 
@@ -132,8 +132,9 @@ class PostController extends Controller
                 'message' => 'post deleted successfully ok'
             ],200);
         } catch (\Exception $th) {
-            return response()->json(['error' => $th->getMessage()],403);
+                return response()->json(['error' => $th->getMessage()],403);
 
+            }
         }
+
     }
-}

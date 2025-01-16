@@ -19,4 +19,13 @@ class Post extends Model
 
         return $this->belongsTo(User::class, 'user_id');
     }
+    function comments()
+    {
+        return $this->belongsTo(Comment::class, 'user_id');
+    }
+
+    function likes(){
+        return $this->belongsTo(Like::class,'user_id');
+    }
+
 }

@@ -10,20 +10,11 @@ use Illuminate\Support\Facades\Validator;
 class AuthController extends Controller
 {
     public function register(Request $request){
-        // $validated = $request->validate([
-        //     'name' => 'required|string|max:255',
-        //     'email' => 'required|string|email|max:255|unique:users',
-        //     'password' => 'required|string|min:6|confirmed',
-        // ]);
-        $validated = Validator::make($request->all(),[
+         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
-        ]);
-
-        if ($validated->fails()) {
-            return response()->json($validated->errors(),403);
-        }
+         ]);
         try {
             $user = User::create([
                 'name' => $request->name,
@@ -76,11 +67,16 @@ class AuthController extends Controller
     }
 
     //logout
-    public function logout(Request $request){
+public function logout(Request $request){
+    try {
         $request->user()->currentAccessToken()->delete();
 
         return response()->json([
             'message' => 'user has been logged out successfully'
         ],200);
     }
+    catch (\Exception $th) {
+        return response()->json(['error' => $th->getMessage()],403);
+    }
+}
 }
